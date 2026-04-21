@@ -1,0 +1,19 @@
+{
+  // note: moduleResolution "bundler" chosen over "node16" for compatibility with both Bun and Node 18+
+  // with ESM ("type": "module"). "node16" requires explicit .js extensions on all imports which
+  // conflicts with Bun's resolver and adds friction for future contributors.
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  },
+  "include": ["src/**/*"]
+}

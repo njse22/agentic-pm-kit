@@ -1,0 +1,41 @@
+{
+  "name": "agentic-pm-kit",
+  "version": "0.0.0",
+  "description": "Free MIT-licensed installer for Agent Skills that turn Claude Code and Gemini CLI into competent drafters of PMBOK- and Scrum-shaped project management artifacts.",
+  "type": "module",
+  "bin": {
+    "agentic-pm-kit": "./bin/agentic-pm-kit.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "dev": "bun run src/bin.ts"
+  },
+  "license": "MIT",
+  "author": "Agentic Engineering Agency",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "gemini-cli",
+    "project-management",
+    "pmbok",
+    "scrum"
+  ],
+  "files": [
+    "dist",
+    "bin",
+    "skills",
+    "vendor",
+    "docs",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "README.md"
+  ],
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "typescript": "^6.0.3"
+  }
+}
