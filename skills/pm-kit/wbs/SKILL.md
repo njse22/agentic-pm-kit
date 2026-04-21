@@ -14,7 +14,7 @@ Use this skill after the epics-and-stories backlog has been reviewed and the tea
 - The resource plan requires a deliverable hierarchy to assign ownership and accountability at the work-package level.
 - A scope change has been approved and the WBS must be updated to reflect the new or removed deliverables.
 
-Do not invoke this skill to generate the epics-and-stories backlog (use the `epics-and-stories` skill instead — the WBS consumes that output). Do not use the WBS as a substitute for the schedule; the WBS defines scope, not time sequence. Use the `schedule` skill to add the time dimension after the WBS is complete.
+Do not invoke this skill to generate the epics-and-stories backlog (use the `epics-and-stories` skill instead — the WBS consumes that output). Do not use the WBS as a substitute for the schedule; the WBS defines scope, not time sequence. Use the `schedule-gantt` skill to add the time dimension after the WBS is complete.
 
 ## Summon the SME
 
