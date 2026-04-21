@@ -1,7 +1,18 @@
 #!/usr/bin/env node
 
-// TODO(B2): replace this shim with the compiled dist/bin.js entry point once
-// the install command is implemented in task B2.
+// Production entry point.
+// Imports the compiled output from `npm run build` (dist/bin.js).
+// For development use `bun run src/bin.ts` instead.
 
-console.log("agentic-pm-kit v0.0.0 (scaffold — install command not yet implemented)");
-process.exit(0);
+import("../dist/bin.js")
+  .then((m) => m.main?.())
+  .catch((err) => {
+    if (err?.code === "ERR_MODULE_NOT_FOUND" || err?.code === "MODULE_NOT_FOUND") {
+      console.error(
+        "Error: dist/bin.js not found. Did you forget to run `npm run build`?"
+      );
+    } else {
+      console.error("Fatal error:", err);
+    }
+    process.exit(1);
+  });
