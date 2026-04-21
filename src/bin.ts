@@ -13,6 +13,7 @@
 import { createRequire } from "node:module";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import * as path from "node:path";
+import * as fs from "node:fs";
 import chalk from "chalk";
 
 // ─── Version helper ───────────────────────────────────────────────────────────
@@ -46,6 +47,11 @@ ${chalk.bold("COMMANDS")}
   install     Interactive install of PM skills into a project directory.
               Writes skill files, vendor references, and a config file.
 
+  (no command) Run inside a project that already has .pm-kit.config.json to
+              open the subsequent-run menu (add/remove modules, change language,
+              switch source mode, reinstall, uninstall).
+              Run in a project without a config to start the install flow.
+
 ${chalk.bold("GLOBAL FLAGS")}
 
   --help, -h          Show this help message and exit.
@@ -77,7 +83,7 @@ export async function main(): Promise<void> {
     return;
   }
 
-  if (args.length === 0 || args.includes("--help") || args.includes("-h")) {
+  if (args.includes("--help") || args.includes("-h")) {
     printHelp();
     return;
   }
@@ -97,6 +103,21 @@ export async function main(): Promise<void> {
     // Lazy-import to keep startup fast for --help / --version
     const { runInstall } = await import("./commands/install.js");
     await runInstall({ fullDeck, onlineMode });
+    return;
+  }
+
+  // No subcommand given — dispatch based on whether a config already exists.
+  if (command === undefined) {
+    const configPath = path.join(process.cwd(), ".pm-kit.config.json");
+    if (fs.existsSync(configPath)) {
+      // Subsequent run: existing install detected → open the management menu.
+      const { runMenu } = await import("./commands/menu.js");
+      await runMenu(process.cwd());
+    } else {
+      // Fresh directory: start the interactive install flow.
+      const { runInstall } = await import("./commands/install.js");
+      await runInstall({ fullDeck: false, onlineMode: false });
+    }
     return;
   }
 
