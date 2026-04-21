@@ -23,8 +23,75 @@
 
 import fs from "node:fs/promises";
 import path from "node:path";
+import { homedir } from "node:os";
 import { sourcePaths } from "../lib/paths.js";
 import type { PmKitConfig } from "../types/config.js";
+
+/**
+ * Install destinations differ by CLI, reflecting each tool's actual discovery model:
+ *
+ *   Claude Code: per-project, auto-discovered from `<projectRoot>/.claude/skills/`.
+ *     Our content lives under a `pm-kit/` namespace subdir so it doesn't collide
+ *     with other skill families the user may have installed.
+ *
+ *   Gemini CLI: user-global, auto-discovered on startup from `<home>/.gemini/extensions/`.
+ *     Skills must be bundled inside an extension with a `gemini-extension.json` manifest;
+ *     Gemini then resolves individual skills at `<extension>/skills/<name>/SKILL.md`. The
+ *     extension name (from the manifest) IS the namespace, so we don't nest `pm-kit/`
+ *     again under the extension's `skills/` dir.
+ *
+ *   Per-project Gemini (`<project>/.gemini/`) is NOT a documented discovery path as of
+ *   the Gemini CLI docs fetched 2026-04-21. Writing there would be invisible to the
+ *   runtime. If Google adds per-project discovery later, this resolver updates in one place.
+ */
+interface AgentDestination {
+  agent: PmKitConfig["agents"][number];
+  /** Absolute path where individual skill subdirectories will land. */
+  skillsRoot: string;
+  /** True if the destination is user-global (shared across all the user's projects). */
+  isGlobal: boolean;
+  /** Optional manifest write hook — Gemini writes a gemini-extension.json; Claude needs none. */
+  writeManifest?: (config: PmKitConfig) => Promise<void>;
+}
+
+function resolveAgentDestinations(
+  config: PmKitConfig,
+  targetDir: string
+): AgentDestination[] {
+  const destinations: AgentDestination[] = [];
+
+  if (config.agents.includes("claude-code")) {
+    destinations.push({
+      agent: "claude-code",
+      skillsRoot: path.join(targetDir, ".claude", "skills", "pm-kit"),
+      isGlobal: false,
+    });
+  }
+
+  if (config.agents.includes("gemini-cli")) {
+    const extensionRoot = path.join(homedir(), ".gemini", "extensions", "pm-kit");
+    destinations.push({
+      agent: "gemini-cli",
+      skillsRoot: path.join(extensionRoot, "skills"),
+      isGlobal: true,
+      writeManifest: async (cfg) => {
+        const manifest = {
+          name: "pm-kit",
+          version: cfg.version,
+          description: `Agentic PM Kit — PM Agent Skills. Project: ${cfg.project.name}.`,
+        };
+        await fs.mkdir(extensionRoot, { recursive: true });
+        await fs.writeFile(
+          path.join(extensionRoot, "gemini-extension.json"),
+          JSON.stringify(manifest, null, 2) + "\n",
+          "utf-8"
+        );
+      },
+    });
+  }
+
+  return destinations;
+}
 
 // ---------------------------------------------------------------------------
 // Module → skill name mapping (spec §5)
@@ -145,23 +212,22 @@ interface AgentTreeOptions {
 async function copyAgentSkillTrees(opts: AgentTreeOptions): Promise<void> {
   const { targetDir, config, allSkillNames } = opts;
 
-  const agentRoots: Array<{ agent: string; root: string }> = [
-    { agent: "claude-code", root: path.join(targetDir, ".claude", "skills", "pm-kit") },
-    { agent: "gemini-cli", root: path.join(targetDir, ".gemini", "skills", "pm-kit") },
-  ];
+  const destinations = resolveAgentDestinations(config, targetDir);
 
-  for (const { agent, root } of agentRoots) {
-    if (!config.agents.includes(agent as PmKitConfig["agents"][number])) {
-      continue;
+  for (const dest of destinations) {
+    // Create the destination skillsRoot (and any parent dirs that may not exist).
+    await fs.mkdir(dest.skillsRoot, { recursive: true });
+
+    // Write per-agent manifest if the destination requires one (Gemini does; Claude
+    // does not). The manifest lives one directory up from skillsRoot, at the
+    // extension root.
+    if (dest.writeManifest) {
+      await dest.writeManifest(config);
     }
-
-    // Create the destination root (and any parent .claude/ or .gemini/ dirs
-    // that may not yet exist in the user's project).
-    await fs.mkdir(root, { recursive: true });
 
     for (const skillName of allSkillNames) {
       const srcSkillDir = path.join(sourcePaths.skills, skillName);
-      const destSkillDir = path.join(root, skillName);
+      const destSkillDir = path.join(dest.skillsRoot, skillName);
 
       // Defensive: if the skill directory hasn't been authored yet, warn and
       // continue. We never throw here — a partial install is better than a

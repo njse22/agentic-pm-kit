@@ -11,6 +11,7 @@ import * as p from "@clack/prompts";
 import chalk from "chalk";
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { homedir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 import type { PmKitConfig } from "../types/config.js";
@@ -251,6 +252,9 @@ export async function runInstall(opts: InstallOptions): Promise<void> {
     closing: "Closing",
   };
 
+  const geminiExtensionDir = path.join(homedir(), ".gemini", "extensions", "pm-kit");
+  const claudeSkillsDir = path.join(targetDir, ".claude", "skills", "pm-kit");
+
   console.log("\n" + chalk.bold("  Install Summary"));
   console.log(chalk.dim("  ─────────────────────────────────────────"));
   console.log(`  ${chalk.dim("Target directory:")}  ${chalk.cyan(targetDir)}`);
@@ -259,6 +263,16 @@ export async function runInstall(opts: InstallOptions): Promise<void> {
   console.log(
     `  ${chalk.dim("Agents:")}            ${chalk.white(selectedAgents.map((a) => agentLabels[a]).join(", "))}`
   );
+  if (selectedAgents.includes("claude-code")) {
+    console.log(
+      `  ${chalk.dim("Claude path:")}       ${chalk.cyan(claudeSkillsDir)}  ${chalk.dim("(per-project)")}`
+    );
+  }
+  if (selectedAgents.includes("gemini-cli")) {
+    console.log(
+      `  ${chalk.dim("Gemini path:")}       ${chalk.cyan(geminiExtensionDir)}  ${chalk.yellow("(user-global — shared across all your Gemini projects)")}`
+    );
+  }
   console.log(
     `  ${chalk.dim("Comm language:")}     ${chalk.white(commLang)}`
   );
