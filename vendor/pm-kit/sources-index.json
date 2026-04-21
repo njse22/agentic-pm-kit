@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "version": "1.0.0",
-  "lastUpdated": "2026-04-20",
+  "version": "1.1.0",
+  "lastUpdated": "2026-04-21",
   "sources": {
     "scrumGuide": "https://scrumguides.org/scrum-guide.html",
     "scrumGuideEs": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Spanish-Latin-South-American.pdf",
@@ -31,6 +31,30 @@
     "valuesArchaeology": "https://en.wikipedia.org/wiki/Edgar_Schein",
     "alienAnthropologist": "https://www.nngroup.com/articles/field-studies/",
     "chaosEngineering": "https://principlesofchaos.org/",
-    "antiSolution": "https://fs.blog/inversion/"
+    "antiSolution": "https://fs.blog/inversion/",
+    "brainstormingLab": "https://en.wikipedia.org/wiki/Brainstorming",
+
+    "charter": "https://www.pmi.org/-/media/pmi/documents/public/pdf/pmbok-standards/12-project-management-principles.pdf",
+    "stakeholderRegister": "https://en.wikipedia.org/wiki/Stakeholder_analysis",
+    "productBrief": "https://leanstack.com/lean-canvas",
+
+    "prd": "https://en.wikipedia.org/wiki/Product_requirements_document",
+    "wbs": "https://en.wikipedia.org/wiki/Work_breakdown_structure",
+    "epicsAndStories": "https://www.agilealliance.org/glossary/user-story",
+    "scheduleGantt": "https://en.wikipedia.org/wiki/Gantt_chart",
+    "costEstimation": "https://en.wikipedia.org/wiki/Three-point_estimation",
+    "riskMatrix": "https://en.wikipedia.org/wiki/Risk_matrix",
+    "communicationPlan": "https://en.wikipedia.org/wiki/Communications_management",
+    "qualityPlan": "https://en.wikipedia.org/wiki/Quality_management",
+    "resourcePlan": "https://en.wikipedia.org/wiki/Resource_management",
+
+    "sprintPlanning": "https://scrumguides.org/scrum-guide.html",
+    "storyExecution": "https://en.wikipedia.org/wiki/User_story",
+    "standupPrep": "https://scrumguides.org/scrum-guide.html",
+    "sprintReview": "https://scrumguides.org/scrum-guide.html",
+
+    "retrospective": "https://scrumguides.org/scrum-guide.html",
+    "postMortem": "https://sre.google/sre-book/postmortem-culture/",
+    "closureReport": "https://en.wikipedia.org/wiki/Project_management"
   }
 }
