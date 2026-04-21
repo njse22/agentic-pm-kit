@@ -1,0 +1,70 @@
+---
+name: brainstorming-what-if-scenarios
+description: "Facilitate a What If Scenarios session to explore plausible futures, stress-test plans, and surface contingency options. Invoke when the user needs to examine how the project would respond to changes in key assumptions about scope, schedule, budget, or environment."
+---
+
+> Adapted from bmad-method:bmad-brainstorming (MIT, © 2025 BMad Code, LLC). See THIRD_PARTY_NOTICES.md.
+
+## When to use
+
+Use this skill when a project plan rests on assumptions that could plausibly change and the team has not yet thought through the response. Typical triggers include:
+
+- A risk review identifies external uncertainties (regulatory change, market shift, technology disruption) that are too broad for a single risk register entry
+- A sponsor asks "what happens if..." for a scenario the team has not modeled
+- A planning exercise requires contingency options for schedule, budget, or resource assumptions
+- A milestone review reveals that conditions have shifted enough to revisit the original planning assumptions
+
+Do not invoke for root-cause analysis of problems that have already occurred; use Five Whys or Failure Analysis for that purpose. This skill is for prospective exploration of futures that have not yet happened.
+
+## Summon the SME
+
+Before facilitating, load the canonical reference to ground the session in established scenario-planning practice.
+
+**Reading the config.** Check `.pm-kit.config.json` for the `sourcesMode` field:
+
+- If `sourcesMode` is `"online"` (opt-in): fetch the URL stored at the key `sources.whatIfScenarios` in `vendor/pm-kit/sources-index.json` using your available web-fetch capability. Do not name a specific tool — use whatever your runtime provides. Ground the facilitation in what you read. Do not fabricate quotations or page numbers.
+- If `sourcesMode` is `"offline"` or the field is absent (the default): rely on your general knowledge of scenario planning as developed through strategic planning practice, including the Royal Dutch Shell scenario method and the work of Herman Kahn. Cite the canonical URL from `vendor/pm-kit/sources-index.json` at key `sources.whatIfScenarios` in the output. Do not fabricate quotations or page numbers.
+
+In both cases, the URL to cite is `https://en.wikipedia.org/wiki/Scenario_planning`.
+
+## Facilitation script
+
+Walk the user through these steps in sequence. Do not skip steps or combine them.
+
+**Step 1 — Identify the focal question.** Ask the user to state the central planning question the scenarios will inform. Example: "What is our response if the integration vendor delays delivery by four weeks?" Confirm the question is specific enough to guide scenario construction.
+
+**Step 2 — List key assumptions.** Ask the user to list the three to five assumptions the current plan depends on most (schedule, budget, vendor commitments, regulatory approvals, technical feasibility). Record each assumption as a stated belief, not a risk.
+
+**Step 3 — Generate scenario triggers.** For each assumption, ask: "What if this assumption were false — what is the plausible event that would break it?" Generate at least one trigger per assumption. Capture the triggers.
+
+**Step 4 — Construct scenarios.** Select the two or three triggers that are most consequential and plausible. For each, ask the team to describe: (a) how the project would be affected if this trigger fires, (b) what early warning signals would appear before it fires, and (c) what the team would do in response. Write each scenario as a short narrative.
+
+**Step 5 — Cross-scenario review.** Ask: "Are there scenarios where two triggers fire simultaneously? How does that compound the impact?" Capture any compound scenarios that are plausible.
+
+**Step 6 — Contingency options.** For each scenario (and compound scenario), confirm that the team has at least one concrete contingency option — a pre-planned response that can be activated if the trigger fires. Identify which options require advance action (e.g., budget pre-approval, vendor backup contract) versus which can be activated reactively.
+
+**Step 7 — Action plan.** For each contingency option that requires advance action, confirm: the owner (role or team), the target date or sprint, and the specific first action.
+
+**Step 8 — Output.** Produce the completed analysis using the structure in `TEMPLATE.md` (sibling file). Fill every section. Leave no placeholder unfilled.
+
+**Step 9 — Save the artifact.** Save the filled artifact to `docs/pm-kit/outputs/brainstorming-what-if-scenarios/<short-slug>.md`. `<short-slug>` is a kebab-case ASCII slug (max 40 characters) derived from the focal question (e.g., `vendor-delay-response`). Confirm the final path with the user before writing. If the file exists, ask: overwrite, append a date suffix (e.g., `-2026-04-20`), or pick a new slug. The artifact begins with the three-line provenance header below (HTML comments, do not render):
+
+```
+<!-- Generated by agentic-pm-kit:brainstorming-what-if-scenarios on YYYY-MM-DD -->
+<!-- Languages: communication=<value>, output=<value> -->
+<!-- Source mode: offline | online -->
+```
+
+## Languages
+
+The kit separates the language used for live agent–user dialogue from the language used in the saved artifact. Both values live in `.pm-kit.config.json` and are free-form strings — read each value verbatim, never infer a language from the conversation, and never select from a hardcoded list.
+
+**Facilitation dialogue.** Speak to the user during facilitation in the language at `language.communication`. Use the string verbatim.
+
+**Filled artifact (saved TEMPLATE.md output).** Produce the written artifact in the language at `language.output`. If `language.output` is absent or empty, fall back to `language.communication`.
+
+Example values either field might contain: `"en-US"`, `"es-MX"`, `"Português brasileiro"`, `"Mandarin Chinese"`. Accept any string as given. This bifurcation is the normative pattern for every skill in the kit.
+
+## Acceptance gate
+
+When the session is complete, point the user to `CHECKLIST.md` (sibling file) and ask them to verify each item. Remind them that the output must be marked **PASS** or **FAIL**. On **FAIL**, invite the user to return with specific notes so the facilitation can be resumed or corrected.

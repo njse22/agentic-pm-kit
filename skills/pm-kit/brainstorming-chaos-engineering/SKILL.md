@@ -1,0 +1,77 @@
+---
+name: brainstorming-chaos-engineering
+description: "Facilitate a Chaos Engineering brainstorming session that stress-tests a project plan, system design, or process by deliberately hypothesizing worst-case failures to reveal hidden fragilities. Invoke when preparing a risk register, pre-mortem analysis, or resilience review before a critical milestone."
+---
+
+> Adapted from bmad-method:bmad-brainstorming (MIT, © 2025 BMad Code, LLC). See THIRD_PARTY_NOTICES.md.
+
+## When to use
+
+Use this skill when the team needs to surface systemic weaknesses by imagining controlled failure before real failure occurs. Typical triggers include:
+
+- Preparing or expanding a risk register before a planning gate or milestone review
+- A pre-mortem exercise at the start of a high-stakes sprint or project phase
+- A resilience review of a process, integration, or dependency that has never been tested under adverse conditions
+- A sponsor or auditor asking: "What happens if this fails?" and the team has no documented answer
+
+Do not invoke for ideation of new features or product directions; this skill is diagnostic, not generative. Do not invoke when a root cause for an existing incident is already known; use Five Whys or Failure Analysis instead.
+
+## Summon the SME
+
+Before facilitating, load the canonical Chaos Engineering reference to ground the session in established practice.
+
+**Reading the config.** Check `.pm-kit.config.json` for the `sourcesMode` field:
+
+- If `sourcesMode` is `"online"` (opt-in): fetch the URL stored at the key `sources.chaosEngineering` in `vendor/pm-kit/sources-index.json` using your available web-fetch capability. Do not name a specific tool — use whatever your runtime provides. Ground the facilitation in what you read. Do not fabricate quotations or page numbers.
+- If `sourcesMode` is `"offline"` or the field is absent (the default): rely on your general knowledge of chaos engineering as defined by the Principles of Chaos Engineering community — specifically: define steady state, hypothesize that steady state continues, introduce real-world failure variables, and attempt to disprove the hypothesis. Cite the canonical URL from `vendor/pm-kit/sources-index.json` at key `sources.chaosEngineering` in the output. Do not fabricate quotations or page numbers.
+
+In both cases, the URL to cite is `https://principlesofchaos.org/`.
+
+## Facilitation script
+
+Walk the user through these steps in sequence. Do not skip steps or combine them.
+
+**Step 1 — Define steady state.** Ask the user: "What does normal, successful operation look like for this plan or system?" Define at least two measurable indicators of steady state (e.g., "all sprints deliver 80% of committed story points," "integration layer responds within 2 seconds").
+
+**Step 2 — Hypothesize continuity.** State the hypothesis explicitly: "We expect steady state to hold even if we introduce the following adverse conditions." Confirm the user understands this is the assumption to be stress-tested.
+
+**Step 3 — Generate failure variables.** Ask: "What real-world events could disrupt steady state?" Prompt across categories:
+- **People** — key contributor unavailable, sponsor change, team conflict
+- **Dependencies** — third-party delay, vendor failure, integration breakage
+- **Scope** — requirement reversal, compliance change, discovered technical debt
+- **Environment** — budget cut, tooling outage, regulatory shift
+
+Collect at least eight failure variables.
+
+**Step 4 — Probe the hypothesis.** For each failure variable, ask: "If this happened, would steady state hold? What would break first? How quickly would the project recover?" Rate each as:
+- **Resilient** — steady state would hold or recover within one sprint.
+- **Fragile** — steady state would break and recovery is unclear.
+- **Unknown** — the team cannot answer.
+
+**Step 5 — Prioritize fragilities.** Rank fragile and unknown items by likelihood × impact. Identify the top three systemic weaknesses — the findings that most urgently require a mitigation plan.
+
+**Step 6 — Design recovery mechanisms.** For each top weakness, propose at least one concrete change to the plan, process, or team structure that increases resilience. Each mechanism should be assignable to a role and time-bounded.
+
+**Step 7 — Output.** Produce the completed analysis using the structure in `TEMPLATE.md` (sibling file). Fill every section. Leave no placeholder unfilled.
+
+**Step 8 — Save the artifact.** Save the filled artifact to `docs/pm-kit/outputs/brainstorming-chaos-engineering/<short-slug>.md`. `<short-slug>` is a kebab-case ASCII slug (max 40 characters) derived from the plan or system being stress-tested. Confirm the final path with the user before writing. If the target file already exists, ask the user whether to overwrite, append a date suffix (e.g., `-2026-04-20`), or choose a different slug. The artifact must begin with the three-line provenance header below (preserved as HTML comments so they do not render):
+
+```
+<!-- Generated by agentic-pm-kit:brainstorming-chaos-engineering on YYYY-MM-DD -->
+<!-- Languages: communication=<value>, output=<value> -->
+<!-- Source mode: offline | online -->
+```
+
+## Languages
+
+The kit separates the language used for live agent–user dialogue from the language used in the saved artifact. Both values live in `.pm-kit.config.json` and are free-form strings — read each value verbatim, never infer a language from the conversation, and never select from a hardcoded list.
+
+**Facilitation dialogue.** Speak to the user during facilitation in the language at `language.communication`. Use the string verbatim.
+
+**Filled artifact (saved TEMPLATE.md output).** Produce the written artifact in the language at `language.output`. If `language.output` is absent or empty, fall back to `language.communication`.
+
+Example values either field might contain: `"en-US"`, `"es-MX"`, `"Português brasileiro"`, `"Mandarin Chinese"`. Accept any string as given. This bifurcation is the normative pattern for every skill in the kit.
+
+## Acceptance gate
+
+When the analysis is complete, point the user to `CHECKLIST.md` (sibling file) and ask them to verify each item. Remind them that the output must be marked **PASS** or **FAIL**. On **FAIL**, invite the user to return with specific notes so the facilitation can be resumed or corrected.
