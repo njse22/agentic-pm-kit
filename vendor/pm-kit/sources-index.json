@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "lastUpdated": "2026-04-20",
+  "sources": {
+    "scrumGuide": "https://scrumguides.org/scrum-guide.html",
+    "scrumGuideEs": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Spanish-Latin-South-American.pdf",
+    "agileManifesto": "https://agilemanifesto.org/",
+    "agileManifestoPrinciples": "https://agilemanifesto.org/principles.html",
+    "pmbok": "https://www.pmi.org/standards/pmbok",
+    "pmiTwelvePrinciples": "https://www.pmi.org/-/media/pmi/documents/public/pdf/pmbok-standards/12-project-management-principles.pdf",
+    "iso21500": "https://www.iso.org/standard/74947.html",
+    "iso21502": "https://www.iso.org/standard/74947.html",
+
+    "fiveWhys": "https://www.lean.org/lexicon-terms/5-whys/",
+    "questionStorming": "https://rightquestion.org/what-is-the-qft/",
+    "assumptionReversal": "https://en.wikipedia.org/wiki/Lateral_thinking",
+    "constraintMapping": "https://en.wikipedia.org/wiki/Theory_of_constraints",
+    "failureAnalysis": "https://en.wikipedia.org/wiki/Failure_analysis",
+    "morphologicalAnalysis": "https://www.swemorph.com/ma.html",
+    "sixThinkingHats": "https://www.debonogroup.com/services/core-programs/six-thinking-hats/",
+    "mindMapping": "https://en.wikipedia.org/wiki/Mind_map",
+    "decisionTreeMapping": "https://en.wikipedia.org/wiki/Decision_tree",
+    "solutionMatrix": "https://en.wikipedia.org/wiki/Decision_matrix",
+    "resourceConstraints": "https://en.wikipedia.org/wiki/Theory_of_constraints",
+    "rolePlaying": "https://dschool.stanford.edu/resources/design-thinking-bootleg",
+    "brainWritingRoundRobin": "https://en.wikipedia.org/wiki/6-3-5_Brainwriting",
+    "reverseBrainstorming": "https://en.wikipedia.org/wiki/Reverse_brainstorming",
+    "whatIfScenarios": "https://en.wikipedia.org/wiki/Scenario_planning",
+    "firstPrinciplesThinking": "https://plato.stanford.edu/entries/aristotle-logic/",
+    "valuesArchaeology": "https://en.wikipedia.org/wiki/Edgar_Schein",
+    "alienAnthropologist": "https://www.nngroup.com/articles/field-studies/",
+    "chaosEngineering": "https://principlesofchaos.org/",
+    "antiSolution": "https://fs.blog/inversion/"
+  }
+}
