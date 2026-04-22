@@ -1,0 +1,21 @@
+{
+  "name": "agentic-pm-kit",
+  "version": "0.1.1",
+  "description": "Agent Skills for PMBOK- and Scrum-shaped project management artifacts — 40 skills across Ideation, Initiation, Planning, Execution, and Closing.",
+  "author": {
+    "name": "Agentic Engineering Agency",
+    "email": "info@agenticengineering.agency"
+  },
+  "homepage": "https://labs.agenticengineering.agency/docs/pm-kit",
+  "repository": "https://github.com/Agentic-Engineering-Agency/agentic-pm-kit",
+  "license": "MIT",
+  "keywords": [
+    "pm",
+    "project-management",
+    "pmbok",
+    "scrum",
+    "agile",
+    "agent-skills"
+  ],
+  "skills": "./skills/pm-kit/"
+}

@@ -63,20 +63,29 @@ function resolveAgentDestinations(
   if (config.agents.includes("claude-code")) {
     destinations.push({
       agent: "claude-code",
-      skillsRoot: path.join(targetDir, ".claude", "skills", "pm-kit"),
+      // Flat layout: Claude Code discovers skills at .claude/skills/<name>/SKILL.md
+      // (one level deep, no namespace subdir). The "pm-kit" grouping lives in our
+      // source tree only; we strip it on copy so each skill is individually
+      // discoverable in the standalone (non-plugin) install path.
+      skillsRoot: path.join(targetDir, ".claude", "skills"),
       isGlobal: false,
     });
   }
 
   if (config.agents.includes("gemini-cli")) {
-    const extensionRoot = path.join(homedir(), ".gemini", "extensions", "pm-kit");
+    const extensionRoot = path.join(
+      homedir(),
+      ".gemini",
+      "extensions",
+      "agentic-pm-kit"
+    );
     destinations.push({
       agent: "gemini-cli",
       skillsRoot: path.join(extensionRoot, "skills"),
       isGlobal: true,
       writeManifest: async (cfg) => {
         const manifest = {
-          name: "pm-kit",
+          name: "agentic-pm-kit",
           version: cfg.version,
           description: `Agentic PM Kit — PM Agent Skills. Project: ${cfg.project.name}.`,
         };
@@ -153,8 +162,8 @@ export interface CopySkillsTreeOptions {
  *
  * ```
  * targetDir/
- * ├── .claude/skills/pm-kit/   ← if config.agents includes "claude-code"
- * ├── .gemini/skills/pm-kit/   ← if config.agents includes "gemini-cli"
+ * ├── .claude/skills/          ← if config.agents includes "claude-code"
+ * ├── .gemini/extensions/      ← if config.agents includes "gemini-cli"
  * ├── docs/pm-kit/
  * │   ├── README.md            ← synthesized from config
  * │   ├── checklists/          ← CHECKLIST.md per installed skill

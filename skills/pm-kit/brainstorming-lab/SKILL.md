@@ -1,6 +1,6 @@
 ---
 name: brainstorming-lab
-description: "Route the user to the right brainstorming strategy for their situation by asking 3–5 diagnostic questions and recommending one or two strategies from the curated 20. Invoke when the user wants to brainstorm but does not know which technique to use."
+description: "Route the user to the right brainstorming strategy for their situation by matching their goal to a curated shortcut table or, when the goal is unclear, asking 3 diagnostic questions and recommending one or two strategies from the curated 20. Invoke when the user wants to brainstorm but has not yet chosen a technique."
 ---
 
 > Adapted from bmad-method:bmad-brainstorming (MIT, © 2025 BMad Code, LLC). See THIRD_PARTY_NOTICES.md.
@@ -32,15 +32,32 @@ Walk the user through these steps in sequence. Do not skip steps or combine them
 
 **Step 1 — Situation summary.** Ask the user to describe their situation in two or three sentences: what they are working on and what they hope to achieve through brainstorming. Confirm your understanding before proceeding.
 
-**Step 2 — Diagnostic questions.** Ask the following questions one at a time, waiting for each answer before asking the next. Adjust phrasing naturally; the goal is accurate information, not a rigid questionnaire.
+**Step 2 — Goal shortcut.** Ask the user to identify their primary goal from the list below. If they name a goal or clearly imply one, present the 2–3 recommended strategies for that row and proceed to Step 4. If no goal fits, continue to Step 3.
 
-1. *Problem type:* "Is this primarily a problem of understanding (you need to discover something), a problem of generating options (you need ideas), or a problem of evaluating choices (you need to decide among alternatives)?"
-2. *Phase:* "Where are you in the project? Early ideation, mid-planning, a specific blocker, or closing review?"
-3. *Group size:* "Will this be a solo session, a small team (2–5), or a larger group (6+)?"
-4. *Time available:* "How much time can you dedicate to this session — under 30 minutes, 30–90 minutes, or a longer workshop?"
-5. *Convergent or divergent:* "Do you need to expand the solution space (generate more ideas) or narrow it down (find the best path forward)?"
+| Goal | Recommended strategies | Rationale |
+|---|---|---|
+| Discover stakeholders we might be missing | `brainstorming-role-playing`, `brainstorming-alien-anthropologist` | Role-playing surfaces stakeholder perspectives through embodiment; Alien Anthropologist reveals overlooked actors through an outsider lens. |
+| Identify risks to the project | `brainstorming-failure-analysis`, `brainstorming-chaos-engineering`, `brainstorming-reverse-brainstorming` | Failure Analysis excavates known failure modes; Chaos Engineering stress-tests the plan against adversarial conditions; Reverse Brainstorming inverts the goal to expose risk vectors. |
+| Choose between multiple options or vendors | `brainstorming-solution-matrix`, `brainstorming-decision-tree-mapping`, `brainstorming-morphological-analysis` | Solution Matrix compares options across shared criteria; Decision Tree Mapping traces outcomes per path; Morphological Analysis structures the full parameter space for systematic comparison. |
+| Understand the root cause of a problem | `brainstorming-five-whys`, `brainstorming-constraint-mapping` | Five Whys drills iteratively to the causal chain; Constraint Mapping surfaces structural limitations that sustain the problem. |
+| Align a team that disagrees about priorities | `brainstorming-six-thinking-hats`, `brainstorming-values-archaeology` | Six Thinking Hats separates roles so each perspective is heard without debate; Values Archaeology surfaces the underlying motivations driving disagreement. |
+| Reframe a problem that feels stuck | `brainstorming-assumption-reversal`, `brainstorming-what-if-scenarios`, `brainstorming-first-principles-thinking` | Assumption Reversal dismantles the frame currently constraining thinking; What-If Scenarios introduce radical hypotheticals; First Principles rebuilds the problem from foundational truths. |
+| Generate options when scope is ambiguous | `brainstorming-mind-mapping`, `brainstorming-morphological-analysis`, `brainstorming-question-storming` | Mind Mapping branches freely from a central concept; Morphological Analysis generates systematic option combinations; Question Storming surfaces scope boundaries before committing to answers. |
+| Evaluate what could go wrong with a plan | `brainstorming-failure-analysis`, `brainstorming-reverse-brainstorming`, `brainstorming-chaos-engineering` | Failure Analysis catalogs known failure modes; Reverse Brainstorming generates problems from the plan's premise; Chaos Engineering tests resilience under deliberate stress. |
+| Discover hidden assumptions | `brainstorming-assumption-reversal`, `brainstorming-alien-anthropologist`, `brainstorming-anti-solution` | Assumption Reversal makes implicit premises visible; Alien Anthropologist treats the familiar as foreign to surface taken-for-granted beliefs; Anti-Solution generates failure paths that expose unstated requirements. |
+| Facilitate a retrospective / surface dysfunctions | `brainstorming-five-whys`, `brainstorming-values-archaeology`, `brainstorming-reverse-brainstorming` | Five Whys traces incident root causes; Values Archaeology uncovers team friction rooted in conflicting priorities; Reverse Brainstorming inverts "what went well" to reveal systemic issues. |
+| Force creative thinking under a tight constraint | `brainstorming-resource-constraints`, `brainstorming-anti-solution` | Resource Constraints imposes extreme scarcity to force novel prioritization; Anti-Solution generates absurd failure paths that, when inverted, reveal non-obvious solutions. |
+| Explore a paradigm shift or bold reframing | `brainstorming-first-principles-thinking`, `brainstorming-assumption-reversal`, `brainstorming-what-if-scenarios` | First Principles deconstructs existing models to rebuild from scratch; Assumption Reversal invalidates the current paradigm's core beliefs; What-If Scenarios project the team into radically different futures. |
 
-**Step 3 — Strategy recommendation.** Based on the diagnostic answers, recommend one or two strategies from the curated 20 listed below. State your recommendation, then give a two- to three-sentence rationale explaining why each recommended strategy fits the user's situation. Do not recommend strategies outside this curated list unless the user explicitly requests the full deck.
+**Step 3 — Diagnostic questions (fallback).** Use this step only if the user's goal did not match any row in Step 2. Ask the following questions one at a time, waiting for each answer before asking the next. Adjust phrasing naturally; the goal is accurate information, not a rigid questionnaire.
+
+1. *Problem mode:* "Are you primarily trying to understand something you don't yet know, generate new options, or evaluate and choose among options you already have?"
+2. *Group size:* "Will this be a solo session, a small team (2–5), or a larger group (6+)?"
+3. *Time available:* "How much time can you dedicate to this session — under 30 minutes, 30–90 minutes, or a longer workshop?"
+
+If the recommendation is still ambiguous after these three answers, default to `brainstorming-question-storming` — generating disciplined questions before assuming the problem is well-defined is the safe universal starting point.
+
+**Step 4 — Strategy recommendation.** Based on the goal shortcut (Step 2) or the diagnostic answers (Step 3), recommend one or two strategies from the curated 20 listed below. State your recommendation, then give a two- to three-sentence rationale explaining why each recommended strategy fits the user's situation. Do not recommend strategies outside this curated list unless the user explicitly requests the full deck.
 
 **Curated 20 strategies:**
 
@@ -65,9 +82,9 @@ Walk the user through these steps in sequence. Do not skip steps or combine them
 19. `brainstorming-chaos-engineering` — deliberate stress-testing; best for resilience and risk planning
 20. `brainstorming-anti-solution` — generate ways to make the problem worse; best for revealing hidden assumptions
 
-**Step 4 — Hand-off.** Tell the user which skill to invoke next. Example: "To run this session, invoke `brainstorming-six-thinking-hats`." Name the skill by its kebab-case identifier so the user's agent can locate and load it.
+**Step 5 — Hand-off.** Tell the user which skill to invoke next. Example: "To run this session, invoke `brainstorming-six-thinking-hats`." Name the skill by its kebab-case identifier so the user's agent can locate and load it.
 
-**Step 5 — Save the artifact.** Save the filled strategy selection rationale to `docs/pm-kit/outputs/brainstorming-lab/<short-slug>.md`. `<short-slug>` is a kebab-case ASCII slug (max 40 chars) derived from the project or problem described by the user (e.g., `bookswap-stakeholder-ideation`). Confirm the final path with the user before writing. If the file exists, ask: overwrite, append a date suffix (e.g., `-2026-04-20`), or pick a new slug. The artifact begins with the three-line provenance header below (HTML comments, do not render):
+**Step 6 — Save the artifact.** Save the filled strategy selection rationale to `docs/pm-kit/outputs/brainstorming-lab/<short-slug>.md`. `<short-slug>` is a kebab-case ASCII slug (max 40 chars) derived from the project or problem described by the user (e.g., `bookswap-stakeholder-ideation`). Confirm the final path with the user before writing. If the file exists, ask: overwrite, append a date suffix (e.g., `-2026-04-20`), or pick a new slug. The artifact begins with the three-line provenance header below (HTML comments, do not render):
 
 ```
 <!-- Generated by agentic-pm-kit:brainstorming-lab on YYYY-MM-DD -->

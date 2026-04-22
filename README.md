@@ -8,21 +8,38 @@ Supports **Claude Code** and **Gemini CLI** out of the box.
 
 ## Install
 
+### Method 1 — npx (recommended, zero config)
+
 ```bash
 npx agentic-pm-kit install
 ```
 
 No global install required. `npx` fetches the package on first run.
 
+### Method 2 — Claude Code plugin
+
+```bash
+/plugin marketplace add Agentic-Engineering-Agency/agentic-pm-kit
+/plugin install agentic-pm-kit@agentic-engineering-agency
+```
+
+Plugin skills are namespaced (`/agentic-pm-kit:charter`) so they never collide with your standalone skills.
+
+### Method 3 — Gemini CLI extension
+
+```bash
+gemini extensions install https://github.com/Agentic-Engineering-Agency/agentic-pm-kit
+```
+
 ---
 
-## Quick start
+## Quick start (npx path)
 
 1. `cd` into your project directory.
 2. Run `npx agentic-pm-kit install`.
 3. Answer the interactive prompts (target dir, agent, language, modules — see below).
 4. Confirm the summary screen.
-5. Open your AI agent and invoke a skill, e.g. `/pm-kit-charter` in Claude Code.
+5. Open your AI agent and invoke a skill, e.g. `charter` in Claude Code.
 
 ---
 
@@ -52,10 +69,9 @@ Skills land in your **project directory**, auto-discovered by Claude Code:
 <project>/
 ├── .claude/
 │   └── skills/
-│       └── pm-kit/
-│           ├── brainstorming-five-whys/SKILL.md
-│           ├── charter/SKILL.md
-│           └── ... (40 skills)
+│       ├── brainstorming-five-whys/SKILL.md
+│       ├── charter/SKILL.md
+│       └── ... (40 skills)
 ├── docs/pm-kit/          ← checklists, templates, outputs
 ├── vendor/pm-kit/        ← bundled Scrum Guide, Manifesto
 └── .pm-kit.config.json
@@ -70,7 +86,7 @@ Skills land in a **user-global extension directory**, auto-discovered on Gemini 
 ```
 ~/.gemini/
 └── extensions/
-    └── pm-kit/
+    └── agentic-pm-kit/
         ├── gemini-extension.json   ← manifest (auto-written)
         └── skills/
             ├── brainstorming-five-whys/SKILL.md
@@ -131,8 +147,8 @@ Re-run `npx agentic-pm-kit install` and enter the new language when prompted. Yo
 
 **How do I uninstall?**
 Delete the following paths:
-- `.claude/skills/pm-kit/` (if you installed for Claude Code)
-- `~/.gemini/extensions/pm-kit/` (if you installed for Gemini CLI)
+- `.claude/skills/` — remove the skill directories installed by the kit (e.g., `charter/`, `brainstorming-five-whys/`, etc.)
+- `~/.gemini/extensions/agentic-pm-kit/` (if you installed for Gemini CLI)
 - `docs/pm-kit/`
 - `vendor/pm-kit/`
 - `.pm-kit.config.json`
@@ -158,7 +174,7 @@ Bundled vendor content: Scrum Guide 2020 (CC BY-SA 4.0, Ken Schwaber and Jeff Su
 
 ## Documentation
 
-Full playbook, phase-by-phase usage guides, and a complete worked example (BookSwap Campus):
+Full playbook and phase-by-phase usage guides:
 
 **<https://labs.agenticengineering.agency/docs/pm-kit>**
 

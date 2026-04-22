@@ -1,0 +1,28 @@
+{
+  "name": "agentic-engineering-agency",
+  "owner": {
+    "name": "Agentic Engineering Agency",
+    "email": "info@agenticengineering.agency"
+  },
+  "metadata": {
+    "description": "Agentic Engineering Agency plugin catalog."
+  },
+  "plugins": [
+    {
+      "name": "agentic-pm-kit",
+      "source": {
+        "source": "github",
+        "repo": "Agentic-Engineering-Agency/agentic-pm-kit"
+      },
+      "description": "40 PM skills for project management in Claude Code.",
+      "version": "0.1.1",
+      "author": {
+        "name": "Agentic Engineering Agency",
+        "email": "info@agenticengineering.agency"
+      },
+      "homepage": "https://labs.agenticengineering.agency/docs/pm-kit",
+      "repository": "https://github.com/Agentic-Engineering-Agency/agentic-pm-kit",
+      "license": "MIT"
+    }
+  ]
+}
