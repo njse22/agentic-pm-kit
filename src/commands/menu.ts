@@ -346,6 +346,8 @@ async function handleUninstall(
       "\n" +
       chalk.dim(`    • ${path.join(targetDir, ".claude", "skills", "pm-kit")}  (if Claude Code was installed)`) +
       "\n" +
+      chalk.dim(`    • ${path.join(targetDir, ".opencode", "skills", "pm-kit")}  (if OpenCode was installed)`) +
+      "\n" +
       chalk.dim(`    • ${path.join(homedir(), ".gemini", "extensions", "pm-kit")}  (user-global; if Gemini CLI was installed)`) +
       "\n" +
       chalk.dim(`    • ${path.join(targetDir, "docs", "pm-kit")}  ← INCLUDES outputs/ (your generated artifacts!)`) +
@@ -388,6 +390,11 @@ async function handleUninstall(
   // 1. Claude Code: per-project skills dir
   if (config.agents.includes("claude-code")) {
     await removeQuiet(path.join(targetDir, ".claude", "skills", "pm-kit"));
+  }
+
+  // 1b. OpenCode: per-project skills dir (namespaced subtree)
+  if (config.agents.includes("opencode")) {
+    await removeQuiet(path.join(targetDir, ".opencode", "skills", "pm-kit"));
   }
 
   // 2. Gemini CLI: user-global extension root (includes manifest + skills/ subdir)
@@ -457,6 +464,11 @@ async function nukeSkillSubtrees(
   // Claude Code per-project skills root
   if (config.agents.includes("claude-code")) {
     await rmrf(path.join(targetDir, ".claude", "skills", "pm-kit"));
+  }
+
+  // OpenCode per-project skills root (namespaced subtree)
+  if (config.agents.includes("opencode")) {
+    await rmrf(path.join(targetDir, ".opencode", "skills", "pm-kit"));
   }
 
   // Gemini CLI per-agent skills dir (only the skills/ subdir — preserve the

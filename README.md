@@ -2,7 +2,7 @@
 
 `agentic-pm-kit` is a free, MIT-licensed npm package that installs Agent Skills for project-management work into AI-powered CLI tools. Once installed, those skills enable your AI assistant to produce competent drafts of PMBOK- and Scrum-shaped artifacts — charters, risk matrices, sprint plans, retrospectives, and more — directly from your terminal, grounded in authoritative sources rather than hallucinated content.
 
-Supports **Claude Code** and **Gemini CLI** out of the box.
+Supports **Claude Code**, **Gemini CLI** and **OpenCode** out of the box.
 
 ---
 
@@ -15,6 +15,8 @@ npx agentic-pm-kit install
 ```
 
 No global install required. `npx` fetches the package on first run.
+
+> **Note:** `npx` runs the version published on npm, and may serve a cached copy. To force the latest: `npx agentic-pm-kit@latest install`. To run an unpublished local clone instead: `npm install && npm run build && node dist/bin.js install`.
 
 ### Method 2 — Claude Code plugin
 
@@ -39,7 +41,7 @@ gemini extensions install https://github.com/Agentic-Engineering-Agency/agentic-
 2. Run `npx agentic-pm-kit install`.
 3. Answer the interactive prompts (target dir, agent, language, modules — see below).
 4. Confirm the summary screen.
-5. Open your AI agent and invoke a skill, e.g. `charter` in Claude Code.
+5. Open your AI agent and invoke a skill, e.g. `charter` in Claude Code or `@charter` in OpenCode.
 
 ---
 
@@ -79,6 +81,25 @@ Skills land in your **project directory**, auto-discovered by Claude Code:
 
 Per-project install: each project can have its own language, module selection, and config.
 
+### OpenCode
+
+Skills land in your **project directory**, auto-discovered by OpenCode V2 (no config file or manifest needed):
+
+```
+<project>/
+├── .opencode/
+│   └── skills/
+│       └── pm-kit/
+│           ├── brainstorming-five-whys/SKILL.md
+│           ├── charter/SKILL.md
+│           └── ... (40 skills)
+├── docs/pm-kit/          ← checklists, templates, outputs
+├── vendor/pm-kit/        ← bundled Scrum Guide, Manifesto
+└── .pm-kit.config.json
+```
+
+Per-project install, same as Claude Code. Mention a skill as `@charter` in your prompt, or let the agent load it by ID when relevant.
+
 ### Gemini CLI
 
 Skills land in a **user-global extension directory**, auto-discovered on Gemini startup:
@@ -100,11 +121,11 @@ One install, shared across all your Gemini projects. The per-project artifacts (
 
 ## Interactive prompt flow
 
-`npx agentic-pm-kit install` walks you through eight prompts:
+`npx agentic-pm-kit install` walks you through eight prompts. In multi-select prompts (agents, modules), move with the arrow keys, **toggle with Space**, and confirm with **Enter** — Enter alone submits the current selection without changing it.
 
 1. **Target directory** — default: current working directory.
 2. **Project name and description** — stored in `.pm-kit.config.json`.
-3. **Agent target** — Claude Code, Gemini CLI, or both (default: both).
+3. **Agent target** — Claude Code, Gemini CLI, OpenCode, or any combination (default: all three).
 4. **Agent communication language** — free-form text; any language string accepted (e.g., `español`, `English`, `português`). Stored verbatim.
 5. **Artifact output language** — defaults to the communication language if left blank.
 6. **Modules** — multi-select: Ideation, Initiation, Planning, Execution, Closing (default: all).
@@ -148,6 +169,7 @@ Re-run `npx agentic-pm-kit install` and enter the new language when prompted. Yo
 **How do I uninstall?**
 Delete the following paths:
 - `.claude/skills/` — remove the skill directories installed by the kit (e.g., `charter/`, `brainstorming-five-whys/`, etc.)
+- `.opencode/skills/pm-kit/` (if you installed for OpenCode)
 - `~/.gemini/extensions/agentic-pm-kit/` (if you installed for Gemini CLI)
 - `docs/pm-kit/`
 - `vendor/pm-kit/`
@@ -159,8 +181,8 @@ No. The install is purely local: files are written to your disk from the npm pac
 **Which Node version is required?**
 Node 18 or later. Bun 1.0+ also works.
 
-**Does this work with agents other than Claude Code and Gemini CLI?**
-Not in v1. The skill format (YAML frontmatter + Markdown body) is based on the shared Agent Skills open standard, so other agents may load the files — but only Claude Code and Gemini CLI are tested and officially supported install targets.
+**Does this work with agents other than Claude Code, Gemini CLI and OpenCode?**
+Not in v1. The skill format (YAML frontmatter + Markdown body) is based on the shared Agent Skills open standard, so other agents may load the files — but only Claude Code, Gemini CLI and OpenCode are tested and officially supported install targets.
 
 ---
 

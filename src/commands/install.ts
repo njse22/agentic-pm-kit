@@ -44,7 +44,7 @@ export async function runInstall(opts: InstallOptions): Promise<void> {
 
   p.intro(chalk.bold.cyan(`  agentic-pm-kit v${version}  `));
   console.log(
-    chalk.dim("  Install PM Agent Skills for Claude Code and/or Gemini CLI.\n")
+    chalk.dim("  Install PM Agent Skills for Claude Code, Gemini CLI and/or OpenCode.\n")
   );
 
   // ─── Q1: Install target directory ────────────────────────────────────────
@@ -107,14 +107,15 @@ export async function runInstall(opts: InstallOptions): Promise<void> {
   }
 
   // ─── Q2: Agent target ────────────────────────────────────────────────────
-  type AgentValue = "claude-code" | "gemini-cli";
+  type AgentValue = "claude-code" | "gemini-cli" | "opencode";
   const agentChoices = await p.multiselect<AgentValue>({
     message: "Which agent(s) should skills be installed for?",
     options: [
       { value: "claude-code" as AgentValue, label: "Claude Code" },
       { value: "gemini-cli" as AgentValue, label: "Gemini CLI" },
+      { value: "opencode" as AgentValue, label: "OpenCode" },
     ],
-    initialValues: ["claude-code", "gemini-cli"] as AgentValue[],
+    initialValues: ["claude-code", "gemini-cli", "opencode"] as AgentValue[],
     required: true,
   });
   if (p.isCancel(agentChoices)) {
@@ -243,6 +244,7 @@ export async function runInstall(opts: InstallOptions): Promise<void> {
   const agentLabels: Record<AgentValue, string> = {
     "claude-code": "Claude Code",
     "gemini-cli": "Gemini CLI",
+    opencode: "OpenCode",
   };
   const moduleLabels: Record<ModuleValue, string> = {
     ideation: "Ideation",
@@ -254,6 +256,7 @@ export async function runInstall(opts: InstallOptions): Promise<void> {
 
   const geminiExtensionDir = path.join(homedir(), ".gemini", "extensions", "pm-kit");
   const claudeSkillsDir = path.join(targetDir, ".claude", "skills", "pm-kit");
+  const opencodeSkillsDir = path.join(targetDir, ".opencode", "skills", "pm-kit");
 
   console.log("\n" + chalk.bold("  Install Summary"));
   console.log(chalk.dim("  ─────────────────────────────────────────"));
@@ -271,6 +274,11 @@ export async function runInstall(opts: InstallOptions): Promise<void> {
   if (selectedAgents.includes("gemini-cli")) {
     console.log(
       `  ${chalk.dim("Gemini path:")}       ${chalk.cyan(geminiExtensionDir)}  ${chalk.yellow("(user-global — shared across all your Gemini projects)")}`
+    );
+  }
+  if (selectedAgents.includes("opencode")) {
+    console.log(
+      `  ${chalk.dim("OpenCode path:")}     ${chalk.cyan(opencodeSkillsDir)}  ${chalk.dim("(per-project)")}`
     );
   }
   console.log(

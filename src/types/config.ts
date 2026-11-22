@@ -8,7 +8,7 @@ export interface PmKitConfig {
   /** ISO 8601 timestamp recorded at the moment of install */
   installedAt: string;
   /** Agent platforms the user chose to install for */
-  agents: ("claude-code" | "gemini-cli")[];
+  agents: ("claude-code" | "gemini-cli" | "opencode")[];
   language: {
     /** Free-form string, stored verbatim from the install prompt */
     communication: string;

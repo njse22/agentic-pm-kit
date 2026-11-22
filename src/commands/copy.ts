@@ -34,6 +34,11 @@ import type { PmKitConfig } from "../types/config.js";
  *     Our content lives under a `pm-kit/` namespace subdir so it doesn't collide
  *     with other skill families the user may have installed.
  *
+ *   OpenCode: per-project, auto-discovered from `<projectRoot>/.opencode/skills/`.
+ *     Unlike Claude Code, OpenCode V2 resolves SKILL.md files nested in grouping
+ *     directories (`skills/pm-kit/<name>/SKILL.md` → ID `<name>`), so we keep the
+ *     `pm-kit/` namespace on disk. No manifest or config entry is required.
+ *
  *   Gemini CLI: user-global, auto-discovered on startup from `<home>/.gemini/extensions/`.
  *     Skills must be bundled inside an extension with a `gemini-extension.json` manifest;
  *     Gemini then resolves individual skills at `<extension>/skills/<name>/SKILL.md`. The
@@ -68,6 +73,18 @@ function resolveAgentDestinations(
       // source tree only; we strip it on copy so each skill is individually
       // discoverable in the standalone (non-plugin) install path.
       skillsRoot: path.join(targetDir, ".claude", "skills"),
+      isGlobal: false,
+    });
+  }
+
+  if (config.agents.includes("opencode")) {
+    destinations.push({
+      agent: "opencode",
+      // Grouped layout: OpenCode V2 discovers SKILL.md nested under grouping
+      // dirs, so .opencode/skills/pm-kit/<name>/SKILL.md yields skill ID <name>.
+      // Keeping the pm-kit/ namespace avoids collisions with the user's own
+      // skills and makes module updates/uninstall a single safe subtree removal.
+      skillsRoot: path.join(targetDir, ".opencode", "skills", "pm-kit"),
       isGlobal: false,
     });
   }
@@ -163,6 +180,7 @@ export interface CopySkillsTreeOptions {
  * ```
  * targetDir/
  * ├── .claude/skills/          ← if config.agents includes "claude-code"
+ * ├── .opencode/skills/pm-kit/ ← if config.agents includes "opencode"
  * ├── .gemini/extensions/      ← if config.agents includes "gemini-cli"
  * ├── docs/pm-kit/
  * │   ├── README.md            ← synthesized from config

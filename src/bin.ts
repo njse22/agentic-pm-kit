@@ -35,7 +35,7 @@ function printHelp(): void {
 ${chalk.bold.cyan("agentic-pm-kit")} v${version}
 
   ${chalk.dim("Free MIT-licensed installer for PM Agent Skills")}
-  ${chalk.dim("(Claude Code + Gemini CLI)")}
+  ${chalk.dim("(Claude Code + Gemini CLI + OpenCode)")}
 
 ${chalk.bold("USAGE")}
 
