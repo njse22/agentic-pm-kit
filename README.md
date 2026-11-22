@@ -113,12 +113,14 @@ Each skill includes a SKILL.md (the agent prompt), a TEMPLATE.md (blank output s
 
 ```mermaid
 flowchart LR
-  A["Ideation<br/>develop the concept"] -->|"an idea worth funding"| B["Initiation<br/>authorize the work"]
-  B -->|"charter signed"| C["Planning<br/>decide how"]
-  C -->|"baseline approved"| D["Execution<br/>build in sprints"]
-  D -->|"increment delivered"| E["Closing<br/>learn and formalize"]
+  A["Ideation<br/>develop the concept<br/><i>@brainstorming-<br/>lab</i>"] -->|"an idea worth funding"| B["Initiation<br/>authorize the work<br/><i>@charter</i>"]
+  B -->|"charter signed"| C["Planning<br/>decide how<br/><i>@prd</i>"]
+  C -->|"baseline approved"| D["Execution<br/>build in sprints<br/><i>@sprint-<br/>planning</i>"]
+  D -->|"increment delivered"| E["Closing<br/>learn and formalize<br/><i>@retrospective</i>"]
   E -. "lessons feed the next cycle" .-> A
 ```
+
+Invocation is shown in OpenCode syntax (`@skill-id`). In Claude Code and Gemini CLI, name the skill in plain language (e.g. `charter` or `/agentic-pm-kit:charter` with the plugin). Each phase's entry-point skill is shown; its siblings follow the same pattern (e.g. `@stakeholder-register`, `@wbs`, `@risk-matrix`, `@sprint-review`, `@closure-report`).
 
 These phases map to the PMBOK process groups (Initiating, Planning, Executing, Monitoring & Controlling, Closing). Ideation is a deliberate pre-project addition, and Monitoring & Controlling is folded into the sprint ceremonies (standup prep, sprint review).
 
